@@ -77,7 +77,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # App Headers
-st.markdown("<div class='main-title'>NIV 罩護無痕 臨床護理照護 App (護理師教學練習版)</div>", unsafe_allow_html=True)
+st.markdown("<div class='main-title'>NIV 罩護無痕 臨床護理照護 App</div>", unsafe_allow_html=True)
 st.markdown("<div class='sub-title'>台大醫院 FACE 圈 跨科部跨團隊智慧結晶 (護理、RT、醫工)</div>", unsafe_allow_html=True)
 
 # Sidebar - Patient Demographics & QCC Logo
@@ -104,6 +104,8 @@ st.sidebar.markdown("""
 **C**omfort (舒適防護)
 **E**limination (消除壓傷)
 """)
+
+st.sidebar.caption("👨‍⚕️ **系統製作人：** 呼吸治療師 辛明翰\n📅 **製作日期：** 初版 2026.09.07 (更新版 2026.09.12)")
 st.sidebar.divider()
 
 st.sidebar.subheader("👤 病患基本資料登記")
@@ -178,25 +180,37 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "🛡️ 臉部皮膚完整度評估"
 ])
 with tab1:
-    st.header("📋 BIPAP 借機與照護完整流程圖")
+    st.header("📋 BIPAP 借機與照護流程圖 & 示範影片")
     st.markdown("""
-    本流程圖參考臨床 **「BIPAP 借機與照護流程圖 (護理單位適用)」**，協助快速掌握照護節點：
+    本流程圖與衛教影片參考臨床 **「BIPAP 借機與照護流程圖 (護理單位適用)」** 與正確面罩配戴衛教腳本，協助護理與醫療同仁快速掌握照護節點：
     """)
     
+    st.subheader("📌 BIPAP 借機與照護 SOP 流程圖")
     st.graphviz_chart("""
     digraph G {
         node [shape=box, style=filled, fontname="Arial", fontsize=10];
         
-        start [label="病房 BIPAP 借機需求\\n(7A / 7D / 14C / 14D)", fillcolor="#E0F2FE", color="#0284C7"];
-        check_time [label="預計使用時間是否大於 12 小時？\\n或新借出的新病人？", fillcolor="#FEF3C7", color="#D97706", shape=diamond];
-        borrow_trilogy [label="至管路櫃借用已綁好\\n文件與物品的 Trilogy 機器", fillcolor="#E0F2FE", color="#0284C7"];
-        medras_eval [label="探視病人並勾選 MedRAS 小卡\\n(2個護理師題目 / 4個RT題目)", fillcolor="#F3E8FF", color="#7C3AED"];
-        fp_recommend [label="符合任意 1 項？\\n建議自費購買 F&P 面罩 (可免減壓墊)", fillcolor="#D1FAE5", color="#059669", shape=diamond];
-        buy_fp [label="引導家屬購買 F&P 面罩\\n(免減壓墊，內建NG槽)", fillcolor="#D1FAE5", color="#059669"];
-        use_public [label="使用公費面罩\\n(需加強減壓防護)", fillcolor="#FEE2E2", color="#DC2626"];
-        adjust_mask [label="確認面罩鬆緊度適當 (兩指寬/RT畫線標記)\\n漏氣監測合格 (<45 / <60 Lpm)", fillcolor="#E0F2FE", color="#0284C7"];
-        audit_n [label="白班病房同仁 / 品管圈員協助稽核：\\n1. 減壓動態查檢交班表\\n2. 小時鐘指針設定", fillcolor="#F3E8FF", color="#7C3AED"];
-        done [label="落實每 2-4 小時移除面罩 15 分鐘\\n持續追蹤皮膚狀況！", fillcolor="#D1FAE5", color="#059669"];
+        start [label="病房 BIPAP 借機需求
+(7A / 7D / 14C / 14D)", fillcolor="#E0F2FE", color="#0284C7"];
+        check_time [label="預計使用時間是否大於 12 小時？
+或新借出的新病人？", fillcolor="#FEF3C7", color="#D97706", shape=diamond];
+        borrow_trilogy [label="至管路櫃借用已綁好
+文件與物品的 Trilogy 機器", fillcolor="#E0F2FE", color="#0284C7"];
+        medras_eval [label="探視病人並勾選 MedRAS 小卡
+(2個護理師題目 / 4個RT題目)", fillcolor="#F3E8FF", color="#7C3AED"];
+        fp_recommend [label="符合任意 1 項？
+建議自費購買 F&P 面罩 (可免減壓墊)", fillcolor="#D1FAE5", color="#059669", shape=diamond];
+        buy_fp [label="引導家屬購買 F&P 面罩
+(免減壓墊，內建NG槽)", fillcolor="#D1FAE5", color="#059669"];
+        use_public [label="使用公費面罩
+(需加強減壓防護)", fillcolor="#FEE2E2", color="#DC2626"];
+        adjust_mask [label="確認面罩鬆緊度適當 (兩指寬/RT畫線標記)
+漏氣監測合格 (<45 / <60 Lpm)", fillcolor="#E0F2FE", color="#0284C7"];
+        audit_n [label="白班病房同仁 / 品管圈員協助稽核：
+1. 減壓動態查檢交班表
+2. 小時鐘指針設定", fillcolor="#F3E8FF", color="#7C3AED"];
+        done [label="落實每 2-4 小時移除面罩 15 分鐘
+持續追蹤皮膚狀況！", fillcolor="#D1FAE5", color="#059669"];
 
         start -> check_time;
         check_time -> borrow_trilogy [label="是"];
@@ -211,6 +225,13 @@ with tab1:
         audit_n -> done;
     }
     """)
+    
+    st.divider()
+    
+    st.subheader("🎥 BIPAP 面罩正確配戴衛教與示範影片")
+    st.video("https://www.youtube.com/watch?v=95PYSABndrM")
+    st.caption("🔗 **示範影片連結：** https://www.youtube.com/watch?v=95PYSABndrM")
+
 
 # TAB 3: MedRAS
 with tab2:
@@ -578,8 +599,8 @@ with tab5:
 # Footer
 st.divider()
 st.markdown("""
-<div style='text-align: center; color: #6B7280; font-size: 14px;'>
-    <p style='margin-bottom: 4px;'>© 2026 國立臺灣大學醫學院附設醫院 - FACE 圈 | 罩護無痕品管專案</p>
+<div style='text-align: center; color: #4B5563; font-size: 14px; line-height: 1.6;'>
+    <p style='margin-bottom: 4px;'><b>© 2026 國立臺灣大學醫學院附設醫院 - FACE 圈 | 罩護無痕品管專案</b></p>
     <p style='margin-bottom: 4px;'>綜合診療部呼吸診療科、護理部、醫工部、品質管理中心聯合敬製</p>
     <p style='margin-bottom: 0px;'><b>👨‍⚕️ 系統製作人：</b> 呼吸治療師 辛明翰 &nbsp;|&nbsp; <b>📅 製作日期：</b> 初版 2026.09.07 &nbsp;•&nbsp; 更新版 2026.09.12</p>
 </div>
