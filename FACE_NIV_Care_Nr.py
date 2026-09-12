@@ -6,7 +6,7 @@ import os
 
 # Set Page Config
 st.set_page_config(
-    page_title="FACE 圈 - NIV 罩護無痕 臨床護理照護 App",
+    page_title="FACE 圈 - NIV 罩護無痕 護理師臨床照護與練習助手",
     page_icon="🏥",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -183,26 +183,21 @@ with tab1:
     本流程圖與衛教影片參考臨床 **「BIPAP 借機與照護流程圖 (護理單位適用)」** 與正確面罩配戴衛教腳本，協助護理與醫療同仁快速掌握照護節點：
     """)
     
-    st.subheader("🎥 BIPAP 面罩正確配戴衛教與示範影片")
-    st.video("https://www.youtube.com/watch?v=95PYSABndrM")
-    st.caption("🔗 **示範影片連結：** https://www.youtube.com/watch?v=95PYSABndrM")
-    st.divider()
-    
     st.subheader("📌 BIPAP 借機與照護 SOP 流程圖")
     st.graphviz_chart("""
     digraph G {
         node [shape=box, style=filled, fontname="Arial", fontsize=10];
         
-        start [label="病房 BIPAP 借機需求\\n(7A / 7D / 14C / 14D)", fillcolor="#E0F2FE", color="#0284C7"];
-        check_time [label="預計使用時間是否大於 12 小時？\\n或新借出的新病人？", fillcolor="#FEF3C7", color="#D97706", shape=diamond];
-        borrow_trilogy [label="至管路櫃借用已綁好\\n文件與物品的 Trilogy 機器", fillcolor="#E0F2FE", color="#0284C7"];
-        medras_eval [label="探視病人並勾選 MedRAS 小卡\\n(2個護理師題目 / 4個RT題目)", fillcolor="#F3E8FF", color="#7C3AED"];
-        fp_recommend [label="符合任意 1 項？\\n建議自費購買 F&P 面罩 (可免減壓墊)", fillcolor="#D1FAE5", color="#059669", shape=diamond];
-        buy_fp [label="引導家屬購買 F&P 面罩\\n(免減壓墊，內建NG槽)", fillcolor="#D1FAE5", color="#059669"];
-        use_public [label="使用公費面罩\\n(需加強減壓防護)", fillcolor="#FEE2E2", color="#DC2626"];
-        adjust_mask [label="確認面罩鬆緊度適當 (兩指寬/RT畫線標記)\\n漏氣監測合格 (<45 / <60 Lpm)", fillcolor="#E0F2FE", color="#0284C7"];
-        audit_n [label="白班病房同仁 / 品管圈員協助稽核：\\n1. 減壓動態查檢交班表\\n2. 小時鐘指針設定", fillcolor="#F3E8FF", color="#7C3AED"];
-        done [label="落實每 2-4 小時移除面罩 15 分鐘\\n持續追蹤皮膚狀況！", fillcolor="#D1FAE5", color="#059669"];
+        start [label="病房 BIPAP 借機需求\n(7A / 7D / 14C / 14D)", fillcolor="#E0F2FE", color="#0284C7"];
+        check_time [label="預計使用時間是否大於 12 小時？\n或新借出的新病人？", fillcolor="#FEF3C7", color="#D97706", shape=diamond];
+        borrow_trilogy [label="至管路櫃借用已綁好\n文件與物品的 Trilogy 機器", fillcolor="#E0F2FE", color="#0284C7"];
+        medras_eval [label="探視病人並勾選 MedRAS 小卡\n(2個護理師題目 / 4個RT題目)", fillcolor="#F3E8FF", color="#7C3AED"];
+        fp_recommend [label="符合任意 1 項？\n建議自費購買 F&P 面罩 (可免減壓墊)", fillcolor="#D1FAE5", color="#059669", shape=diamond];
+        buy_fp [label="引導家屬購買 F&P 面罩\n(免減壓墊，內建NG槽)", fillcolor="#D1FAE5", color="#059669"];
+        use_public [label="使用公費面罩\n(需加強減壓防護)", fillcolor="#FEE2E2", color="#DC2626"];
+        adjust_mask [label="確認面罩鬆緊度適當 (兩指寬/RT畫線標記)\n漏氣監測合格 (<45 / <60 Lpm)", fillcolor="#E0F2FE", color="#0284C7"];
+        audit_n [label="白班病房同仁 / 品管圈員協助稽核：\n1. 減壓動態查檢交班表\n2. 小時鐘指針設定", fillcolor="#F3E8FF", color="#7C3AED"];
+        done [label="落實每 2-4 小時移除面罩 15 分鐘\n持續追蹤皮膚狀況！", fillcolor="#D1FAE5", color="#059669"];
 
         start -> check_time;
         check_time -> borrow_trilogy [label="是"];
@@ -217,6 +212,12 @@ with tab1:
         audit_n -> done;
     }
     """)
+    
+    st.divider()
+    
+    st.subheader("🎥 BIPAP 面罩正確配戴衛教與示範影片")
+    st.video("https://www.youtube.com/watch?v=95PYSABndrM")
+    st.caption("🔗 **示範影片連結：** https://www.youtube.com/watch?v=95PYSABndrM")
 
 # TAB 3: MedRAS
 with tab2:
