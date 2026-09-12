@@ -172,10 +172,10 @@ def update_ng_from_checklist():
 # Navigation Tabs for Nurse Reference/Practice Version
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "📋 照護流程主軸", 
-    "🔍 MedRAS 智能評估小卡 (護理師 & RT 聯合版)", 
-    "📊 最佳壓力區間查檢單 (三班KEY單)", 
-    "⏰ 定期減壓時間點勾稽與備註", 
-    "🛡️ 臉部皮膚完整度評估 (三班KEY單)"
+    "🔍 MedRAS評估小卡(Nr&RT聯合版)", 
+    "📊 最佳壓力區間查檢單(漏氣和綁帶確認)", 
+    "⏰ 定期減壓時間點", 
+    "🛡️ 臉部皮膚完整度評估"
 ])
 with tab1:
     st.header("📋 BIPAP 借機與照護完整流程圖")
