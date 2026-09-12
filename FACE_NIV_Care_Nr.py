@@ -77,7 +77,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # App Headers
-st.markdown("<div class='main-title'>NIV 罩護無痕 臨床護理照護 App</div>", unsafe_allow_html=True)
+st.markdown("<div class='main-title'>NIV 罩護無痕 臨床護理照護 App (護理師教學練習版)</div>", unsafe_allow_html=True)
 st.markdown("<div class='sub-title'>台大醫院 FACE 圈 跨科部跨團隊智慧結晶 (護理、RT、醫工)</div>", unsafe_allow_html=True)
 
 # Sidebar - Patient Demographics & QCC Logo
@@ -104,7 +104,6 @@ st.sidebar.markdown("""
 **C**omfort (舒適防護)
 **E**limination (消除壓傷)
 """)
-st.sidebar.caption("👨‍⚕️ **系統製作人：** 呼吸治療師 辛明翰\n📅 **製作日期：** 初版 2026.09.07 (更新版 2026.09.12)")
 st.sidebar.divider()
 
 st.sidebar.subheader("👤 病患基本資料登記")
@@ -172,11 +171,11 @@ def update_ng_from_checklist():
 
 # Navigation Tabs for Nurse Reference/Practice Version
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
-    "📋 照護流程主軸", 
-    "🔍 MedRAS 智能評估小卡 (護理師 & RT 聯合版)", 
-    "📊 最佳壓力區間查檢單 (三班KEY單)", 
-    "⏰ 定期減壓時間點勾稽與備註", 
-    "🛡️ 臉部皮膚完整度評估 (三班KEY單)"
+    "📋 照護流程主軸&示範影片", 
+    "🔍 MedRAS評估小卡(Nr&RT)", 
+    "📊 漏氣量和綁帶確認", 
+    "⏰ 4小時定期減壓", 
+    "🛡️ 臉部皮膚完整度評估"
 ])
 with tab1:
     st.header("📋 BIPAP 借機與照護完整流程圖")
@@ -579,9 +578,9 @@ with tab5:
 # Footer
 st.divider()
 st.markdown("""
-<div style='text-align: center; color: #4B5563; font-size: 14px; line-height: 1.6;'>
-    <p style='margin-bottom: 4px;'><b>© 2026 國立臺灣大學醫學院附設醫院 - FACE 圈 | 罩護無痕品管專案</b></p>
-    <p style='margin-bottom: 4px;'>綜合診療部呼吸治療科、護理部、醫工部、品質管理中心聯合敬製</p>
+<div style='text-align: center; color: #6B7280; font-size: 14px;'>
+    <p style='margin-bottom: 4px;'>© 2026 國立臺灣大學醫學院附設醫院 - FACE 圈 | 罩護無痕品管專案</p>
+    <p style='margin-bottom: 4px;'>綜合診療部呼吸診療科、護理部、醫工部、品質管理中心聯合敬製</p>
     <p style='margin-bottom: 0px;'><b>👨‍⚕️ 系統製作人：</b> 呼吸治療師 辛明翰 &nbsp;|&nbsp; <b>📅 製作日期：</b> 初版 2026.09.07 &nbsp;•&nbsp; 更新版 2026.09.12</p>
 </div>
 """, unsafe_allow_html=True)
