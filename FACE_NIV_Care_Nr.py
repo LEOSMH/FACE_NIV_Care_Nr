@@ -6,7 +6,7 @@ import os
 
 # Set Page Config
 st.set_page_config(
-    page_title="FACE 圈 - NIV 罩護無痕 護理師臨床照護與練習助手",
+    page_title="FACE 圈 - NIV 罩護無痕 臨床護理照護 App",
     page_icon="🏥",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -77,7 +77,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # App Headers
-st.markdown("<div class='main-title'>NIV 罩護無痕 臨床護理照護 App (護理師教學練習版)</div>", unsafe_allow_html=True)
+st.markdown("<div class='main-title'>NIV 罩護無痕 臨床護理照護 App</div>", unsafe_allow_html=True)
 st.markdown("<div class='sub-title'>台大醫院 FACE 圈 跨科部跨團隊智慧結晶 (護理、RT、醫工)</div>", unsafe_allow_html=True)
 
 # Sidebar - Patient Demographics & QCC Logo
@@ -171,18 +171,24 @@ def update_ng_from_checklist():
 
 # Navigation Tabs for Nurse Reference/Practice Version
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
-    "📋 照護流程主軸", 
+    "📋 照護流程主軸&示範影片", 
     "🔍 MedRAS評估小卡(Nr&RT聯合版)", 
     "📊 最佳壓力區間查檢單(漏氣和綁帶確認)", 
     "⏰ 定期減壓時間點", 
     "🛡️ 臉部皮膚完整度評估"
 ])
 with tab1:
-    st.header("📋 BIPAP 借機與照護完整流程圖")
+    st.header("📋 BIPAP 借機與照護流程圖 & 示範影片")
     st.markdown("""
-    本流程圖參考臨床 **「BIPAP 借機與照護流程圖 (護理單位適用)」**，協助快速掌握照護節點：
+    本流程圖與衛教影片參考臨床 **「BIPAP 借機與照護流程圖 (護理單位適用)」** 與正確面罩配戴衛教腳本，協助護理與醫療同仁快速掌握照護節點：
     """)
     
+    st.subheader("🎥 BIPAP 面罩正確配戴衛教與示範影片")
+    st.video("https://www.youtube.com/watch?v=95PYSABndrM")
+    st.caption("🔗 **示範影片連結：** https://www.youtube.com/watch?v=95PYSABndrM")
+    st.divider()
+    
+    st.subheader("📌 BIPAP 借機與照護 SOP 流程圖")
     st.graphviz_chart("""
     digraph G {
         node [shape=box, style=filled, fontname="Arial", fontsize=10];
