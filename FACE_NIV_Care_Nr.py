@@ -1,5 +1,4 @@
 import streamlit as st
-import streamlit.components.v1 as components
 import datetime
 import time
 import pandas as pd
@@ -13,17 +12,23 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Google Analytics (GA4 - G-ZSFLZD7215)
-components.html(
-    """
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZSFLZD7215"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-ZSFLZD7215');
 
-      var parentHead = window.parent.document.querySelector('head');
+# Google Analytics (GA4 - G-ZSFLZD7215)
+import streamlit.components.v1 as components
+ga_snippet = """
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZSFLZD7215"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZSFLZD7215');
+</script>
+<script>
+  try {
+    var parentHead = window.parent.document.getElementsByTagName('head')[0];
+    if (parentHead) {
       if (!parentHead.querySelector('script[src*="G-ZSFLZD7215"]')) {
         var script1 = window.parent.document.createElement('script');
         script1.async = true;
@@ -34,11 +39,14 @@ components.html(
         script2.innerHTML = "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-ZSFLZD7215');";
         parentHead.appendChild(script2);
       }
-    </script>
-    """,
-    height=0,
-    width=0
-)
+    }
+  } catch (e) {
+    console.log('GA injection note:', e);
+  }
+</script>
+"""
+components.html(ga_snippet, height=0, width=0)
+
 
 # Custom Styling
 st.markdown("""
@@ -132,96 +140,14 @@ st.sidebar.markdown("""
 **C**omfort (舒適防護)
 **E**limination (消除壓傷)
 """)
-st.sidebar.caption("👨‍⚕️ **系統製作人：** 呼吸治療師 辛明翰\n📅 **製作日期：** 初版 2026.09.07 (更新版 2026.09.17)")
+st.sidebar.caption("👨‍⚕️ **系統製作人：** 呼吸治療師 辛明翰\n📅 **更新日期：** 2026.09.17 (護理師專用版)")
 st.sidebar.divider()
 
-if "temp_records" not in st.session_state:
-    st.session_state.temp_records = []
-
-# Fetch active patient records early for quick sidebar auto-fill from local session state
-active_patients_map = {}
-patient_quick_options = ["➕ 新增 / 手動輸入新病患"]
-
-if len(st.session_state.temp_records) > 0:
-    early_df = pd.DataFrame(st.session_state.temp_records)
-    req_cols = ["填表時間", "單位", "床號", "姓名", "病歷號", "病患狀態"]
-    for col in req_cols:
-        if col not in early_df.columns:
-            early_df[col] = "N/A"
-    try:
-        early_df["填表時間_dt"] = pd.to_datetime(early_df["填表時間"])
-    except Exception:
-        early_df["填表時間_dt"] = early_df["填表時間"]
-        
-    df_sorted = early_df.sort_values(by="填表時間_dt", ascending=True)
-    latest_recs = df_sorted.drop_duplicates(subset=["病歷號"], keep="last")
-    active_recs = latest_recs[latest_recs["病患狀態"] != "結案/停用BIPAP (結案)"]
-    
-    for _, r in active_recs.iterrows():
-        opt_label = f"📍 {r['單位']} {r['床號']}床 - {r['姓名']} ({r['病歷號']})"
-        active_patients_map[opt_label] = r.to_dict()
-        patient_quick_options.append(opt_label)
-
-# Callback to auto-fill sidebar fields when a patient is picked from the quick dropdown
-fio2_options = [21, 25] + list(range(30, 101, 5))
-
-def on_quick_patient_select():
-    sel = st.session_state.get("quick_patient_choice")
-    if sel in active_patients_map:
-        p_info = active_patients_map[sel]
-        unit_val = p_info.get("單位", "7A")
-        st.session_state.sb_unit = unit_val if unit_val in ["7A", "7D", "14C", "14D"] else "7A"
-        st.session_state.sb_bed = str(p_info.get("床號", ""))
-        st.session_state.sb_name = str(p_info.get("姓名", ""))
-        st.session_state.sb_chart = str(p_info.get("病歷號", ""))
-        st.session_state.sb_order = str(p_info.get("當日使用醫囑", "BIPAP持續使用12hr, off 15 mins Q4H between 06:00-24:00"))
-        
-        raw_setting = str(p_info.get("BIPAP設定值", "16/8/40%"))
-        try:
-            parts = raw_setting.replace("%", "").split("/")
-            st.session_state.sb_ipap = int(parts[0])
-            st.session_state.sb_epap = int(parts[1])
-            f_val = int(parts[2])
-            st.session_state.sb_fio2 = f_val if f_val in fio2_options else 40
-        except Exception:
-            st.session_state.sb_ipap = 16
-            st.session_state.sb_epap = 8
-            st.session_state.sb_fio2 = 40
-    else:
-        st.session_state.sb_unit = "7A"
-        st.session_state.sb_bed = ""
-        st.session_state.sb_name = ""
-        st.session_state.sb_chart = ""
-        st.session_state.sb_order = "BIPAP持續使用12hr, off 15 mins Q4H between 06:00-24:00"
-        st.session_state.sb_ipap = 16
-        st.session_state.sb_epap = 8
-        st.session_state.sb_fio2 = 40
-
 st.sidebar.subheader("👤 病患基本資料登記")
-
-# Quick patient auto-fill dropdown
-st.sidebar.selectbox(
-    "⚡ 快速選擇已在案病患 (自動帶入)",
-    options=patient_quick_options,
-    key="quick_patient_choice",
-    on_change=on_quick_patient_select,
-    help="點選已在案的病患名稱，系統將自動帶入該病患最新的床號、姓名、病歷號及BIPAP醫囑與設定！新病患請選擇『新增/手動輸入』。"
-)
-
-# Initialize session state keys for sidebar inputs if not set
-if "sb_unit" not in st.session_state: st.session_state.sb_unit = "7A"
-if "sb_bed" not in st.session_state: st.session_state.sb_bed = ""
-if "sb_name" not in st.session_state: st.session_state.sb_name = ""
-if "sb_chart" not in st.session_state: st.session_state.sb_chart = ""
-if "sb_order" not in st.session_state: st.session_state.sb_order = "BIPAP持續使用12hr, off 15 mins Q4H between 06:00-24:00"
-if "sb_ipap" not in st.session_state: st.session_state.sb_ipap = 16
-if "sb_epap" not in st.session_state: st.session_state.sb_epap = 8
-if "sb_fio2" not in st.session_state: st.session_state.sb_fio2 = 40
-
-unit_select = st.sidebar.selectbox("單位 (Unit)", ["7A", "7D", "14C", "14D"], key="sb_unit")
-bed_no = st.sidebar.text_input("床號 (Bed No.)", placeholder="例：12", key="sb_bed")
-patient_name = st.sidebar.text_input("姓名 (Patient Name)", placeholder="例：王小明", key="sb_name")
-chart_no = st.sidebar.text_input("病歷號 (Chart No.)", placeholder="例：1234567", key="sb_chart")
+unit_select = st.sidebar.selectbox("單位 (Unit)", ["7A", "7D", "14C", "14D"])
+bed_no = st.sidebar.text_input("床號 (Bed No.)", placeholder="例：12")
+patient_name = st.sidebar.text_input("姓名 (Patient Name)", placeholder="例：王小明")
+chart_no = st.sidebar.text_input("病歷號 (Chart No.)", placeholder="例：1234567")
 
 track_status = st.sidebar.selectbox(
     "🔄 本次填表病患狀態 (Status)", 
@@ -232,16 +158,18 @@ track_status = st.sidebar.selectbox(
 st.sidebar.subheader("📋 醫囑與呼吸器設定")
 bipap_order = st.sidebar.text_input(
     "當日 BIPAP 使用醫囑 (Order)", 
-    key="sb_order"
+    value="BIPAP持續使用12hr, off 15 mins Q4H between 06:00-24:00"
 )
 
 col_set1, col_set2, col_set3 = st.sidebar.columns(3)
 with col_set1:
-    ipap_val = st.number_input("IPAP", min_value=4, max_value=30, step=1, help="cmH2O", key="sb_ipap")
+    ipap_val = st.number_input("IPAP", min_value=4, max_value=30, value=16, step=1, help="cmH2O")
 with col_set2:
-    epap_val = st.number_input("EPAP", min_value=4, max_value=20, step=1, help="cmH2O", key="sb_epap")
+    epap_val = st.number_input("EPAP", min_value=4, max_value=20, value=8, step=1, help="cmH2O")
 with col_set3:
-    fio2_val = st.sidebar.selectbox("FiO2 (%)", options=fio2_options, help="氧氣濃度", key="sb_fio2")
+    fio2_options = [21, 25] + list(range(30, 101, 5))
+    default_index = fio2_options.index(40)
+    fio2_val = st.selectbox("FiO2 (%)", options=fio2_options, index=default_index, help="氧氣濃度")
 
 bipap_settings = f"{ipap_val}/{epap_val}/{fio2_val}%"
 
@@ -278,15 +206,16 @@ def update_ng_from_checklist():
     st.session_state["medras_ng_rt_key"] = val
 
 
-# Navigation Tabs for Nurse Reference/Practice Version
-tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
+# Navigation Tabs for Nurse Reference/Practice Version (Exactly 5 Tabs)
+tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "📋 照護流程主軸", 
     "🔍 MedRAS 智能評估小卡 (護理師 & RT 聯合版)", 
     "📊 最佳壓力區間查檢單 (三班KEY單)", 
     "⏰ 定期減壓時間點勾稽與備註", 
-    "🛡️ 臉部皮膚完整度評估 (三班KEY單)",
-    "💾 練習紀錄與匯出"
+    "🛡️ 臉部皮膚完整度評估 (三班KEY單)"
 ])
+
+# TAB 1: FLOWCHART
 with tab1:
     st.header("📋 BIPAP 借機與照護完整流程圖")
     st.markdown("""
@@ -328,7 +257,7 @@ with tab2:
     st.markdown("""
     根據 **FACE 圈 MedRAS 護備小卡** 指引，評估病患特質。
     不論是護理師評估或是呼吸治療師 (RT) 評估，<b>只要其中任意一個項目符合</b>，即可建議家屬自費購買 **F&P 面罩** (臨床實證受壓極低，且兩側有設計 NG 槽，<b>可以不需減壓墊</b>)。
-    """, unsafe_allow_html=True)
+    """)
     
     col1, col2 = st.columns(2)
     with col1:
@@ -375,21 +304,6 @@ with tab2:
             help="若選擇『否』，代表現有面罩與病患臉型不適配，極易造成大漏氣或局部壓迫。"
         )
         
-        st.write("") # Spacer
-        st.subheader("🎭 面罩款式登記")
-        mask_type_select = st.selectbox(
-            "請選取面罩款式：", 
-            ["公費", "自費", "其他 (可自己填寫)"], 
-            index=0,
-            key="mask_type_select_key",
-            help="記錄病患目前使用的面罩款式（如公費標準面罩、自費 F&P 面罩或其他款式）。"
-        )
-        if mask_type_select == "其他 (可自己填寫)":
-            custom_mask_type = st.text_input("請輸入自訂面罩款式名稱/說明", placeholder="例：Wizard / 奇美自備款", key="custom_mask_type_key")
-            mask_type_val = f"其他 ({custom_mask_type})" if custom_mask_type else "其他"
-        else:
-            mask_type_val = mask_type_select
-        
     with col2:
         st.subheader("💡 系統評估與決策建議")
         
@@ -402,7 +316,7 @@ with tab2:
         if medras_ng_select == "是": triggers.append("護理師評估：使用鼻胃管 (NG)")
         if medras_skin_select == "是": triggers.append("護理師評估：臉部皮膚脆弱或破皮")
         if rt_medras_ng_select == "是": triggers.append("RT評估：使用鼻胃管 (NG)")
-        if rt_medras_device_select in ["紗布", "減壓墊"]: triggers.append(f"RT評估：已使用減壓設備 ({rt_medras_device_select})")
+        if rt_medras_device_select in ["紗布", "減壓墊"]: triggers.append("RT評估：已使用減壓設備 (" + str(rt_medras_device_select) + ")")
         if rt_medras_skin_select == "是": triggers.append("RT評估：臉部配戴處已有破皮")
         if rt_medras_suit_select == "否": triggers.append("RT評估：面罩不適合病人 (臉凹或尺寸中間)")
 
@@ -508,7 +422,7 @@ with tab3:
         else:
             tension_ON = tension_ON_select
 
-# TAB 4: DECOMPRESSION MULTI-SELECT CHECKLIST & IH SPRAY
+# TAB 4: DECOMPRESSION MULTI-SELECT CHECKLIST
 with tab4:
     st.header("⏰ 定期減壓時間點勾稽與備註 (06:00 - 24:00)")
     st.markdown("""
@@ -736,94 +650,9 @@ with tab5:
         st.markdown("""
         <div class='success-box'>
             🟢 <b>皮膚狀況良好或常規維持中：</b><br>
-            請持續落實每 2-4 小時定期移除面罩減壓 15 分鐘，維持最佳照護品質！
+            請持續落實每 2-4 小時定期移除面罩減壓 15 分鐘，維護最佳照護品質！
         </div>
         """, unsafe_allow_html=True)
-
-# TAB 6: SAVE & EXPORT PRACTICE RECORDS
-with tab6:
-    st.header("💾 本次練習紀錄暫存與下載 (護理師教學版)")
-    st.markdown("""
-    本分頁提供練習紀錄之**瀏覽器暫存與 CSV 匯出**功能，方便護理師練習登錄並即時下單核對！
-    """)
-
-    current_entry = {
-        "填表時間": entry_date_str,
-        "單位": unit_select,
-        "床號": bed_no if bed_no else "未填寫",
-        "病患狀態": track_status,
-        "姓名": patient_name if patient_name else "未填寫",
-        "病歷號": chart_no if chart_no else "未填寫",
-        "當日使用醫囑": bipap_order if bipap_order else "未填寫",
-        "BIPAP設定值": bipap_settings,
-        "是否為初次上機第一天": "是" if is_first_day else "否",
-        "第一天臉部Baseline皮膚狀況": (f"{baseline_status.split(' - ')[0]} ({baseline_site})" if (is_first_day and baseline_site not in ["無", "N/A"]) else (baseline_status.split(' - ')[0] if is_first_day else "N/A")),
-        "第一天Baseline受損部位": baseline_site if is_first_day else "N/A",
-        "MedRAS護理_是否使用NG": medras_ng_select,
-        "MedRAS護理_臉部皮膚風險": medras_skin_select,
-        "MedRAS_RT_是否使用NG": rt_medras_ng_select,
-        "MedRAS_RT_減壓設備": rt_medras_device_select,
-        "MedRAS_RT_臉部皮膚破皮": rt_medras_skin_select,
-        "MedRAS_RT_面罩適合度": rt_medras_suit_select,
-        "面罩款式": mask_type_val,
-        "MedRAS_系統建議面罩": medras_recommendation,
-        "鼻胃管狀態": has_ng_input.split(" ")[0],
-        "白班漏氣量(Lpm)": leak_val_N,
-        "白班漏氣判定": leak_status_N,
-        "白班固定帶張力": tension_N,
-        "小夜漏氣量(Lpm)": leak_val_HN,
-        "小夜漏氣判定": leak_status_HN,
-        "小夜固定帶張力": tension_HN,
-        "大夜漏氣量(Lpm)": leak_val_ON,
-        "大夜漏氣判定": leak_status_ON,
-        "大夜固定帶張力": tension_ON,
-        "已執行減壓時間點": ", ".join(decomp_selected) if decomp_selected else "未勾選",
-        "減壓執行次數": len(decomp_selected),
-        "減壓備註與未執行原因": full_decomp_note,
-        "是否使用IH": ih_status_val,
-        "IH使用頻率": ih_freq_val,
-        "IH備註與藥物": ih_note_val,
-        "白班皮膚狀況": (f"{skin_N.split(' - ')[0]} ({skin_site_N})" if skin_site_N not in ["無", "N/A"] else skin_N.split(' - ')[0]),
-        "白班皮膚部位": skin_site_N,
-        "小夜皮膚狀況": (f"{skin_HN.split(' - ')[0]} ({skin_site_HN})" if skin_site_HN not in ["無", "N/A"] else skin_HN.split(' - ')[0]),
-        "小夜皮膚部位": skin_site_HN,
-        "大夜皮膚狀況": (f"{skin_ON.split(' - ')[0]} ({skin_site_ON})" if skin_site_ON not in ["無", "N/A"] else skin_ON.split(' - ')[0]),
-        "大夜皮膚部位": skin_site_ON,
-        "KEY單人員簽名": nurse_name if nurse_name else "未簽名"
-    }
-
-    st.subheader("📝 本次 KEY 單資料預覽 (三班綜合數據)")
-    preview_df = pd.DataFrame([current_entry]).T
-    preview_df.columns = ["當前輸入數值"]
-    st.table(preview_df)
-
-    col_btn1, col_col2 = st.columns(2)
-    with col_btn1:
-        if st.button("📥 暫存此筆練習資料", use_container_width=True):
-            if not bed_no or not patient_name or not chart_no:
-                st.warning("⚠️ 請確認左側【病患基本資料】(床號、姓名、病歷號) 是否填寫完整再儲存！")
-            else:
-                st.session_state.temp_records.append(current_entry)
-                st.success(f"🎉 成功暫存於本機！目前累計暫存筆數：{len(st.session_state.temp_records)} 筆。")
-                
-    with col_col2:
-        if st.button("🗑️ 清空本地暫存清單", use_container_width=True):
-            st.session_state.temp_records = []
-            st.info("已清空本地瀏覽器暫存數據。")
-
-    st.subheader("📋 目前累計練習清單")
-    if len(st.session_state.temp_records) > 0:
-        history_df = pd.DataFrame(st.session_state.temp_records)
-        st.dataframe(history_df, use_container_width=True)
-        
-        csv_data = history_df.to_csv(index=False, encoding="utf-8-sig")
-        st.download_button(
-            label="📥 匯出並下載為 CSV 報表 (可用 Excel 直接打開)",
-            data=csv_data,
-            file_name=f"NIV_Care_Nurse_Practice_{datetime.datetime.now().strftime('%Y%m%d')}.csv",
-            mime="text/csv",
-            use_container_width=True
-        )
 
 # Footer
 st.divider()
