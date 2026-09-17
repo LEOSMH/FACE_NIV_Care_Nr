@@ -1,5 +1,4 @@
 import streamlit as st
-import streamlit.components.v1 as components
 import datetime
 import time
 import pandas as pd
@@ -12,44 +11,6 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
-
-# Google Analytics (GA4 - G-ZSFLZD7215)
-ga_tracking_code = """
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZSFLZD7215"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-ZSFLZD7215');
-
-  try {
-    if (window.parent && window.parent.document && window.parent.document.head) {
-      const parentHead = window.parent.document.head;
-      if (!parentHead.querySelector('script[src*="G-ZSFLZD7215"]')) {
-        const script1 = window.parent.document.createElement('script');
-        script1.async = true;
-        script1.src = 'https://www.googletagmanager.com/gtag/js?id=G-ZSFLZD7215';
-        parentHead.appendChild(script1);
-
-        const script2 = window.parent.document.createElement('script');
-        script2.innerHTML = `
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-ZSFLZD7215');
-        `;
-        parentHead.appendChild(script2);
-      }
-    }
-  } catch (e) {
-    console.log("GA Parent Injection Note:", e);
-  }
-</script>
-"""
-components.html(ga_tracking_code, height=0, width=0)
-
 
 # Custom Styling
 st.markdown("""
@@ -143,8 +104,6 @@ st.sidebar.markdown("""
 **C**omfort (舒適防護)
 **E**limination (消除壓傷)
 """)
-st.sidebar.caption("👨‍⚕️ **系統製作人：** 呼吸治療師 辛明翰\n📅 **製作日期：** 初版 2026.09.07 (更新版 2026.09.17)")
-
 st.sidebar.divider()
 
 st.sidebar.subheader("👤 病患基本資料登記")
@@ -618,4 +577,10 @@ with tab5:
 
 # Footer
 st.divider()
-st.markdown("© 2026 國立臺灣大學醫學院附設醫院 - FACE 圈 | 罩護無痕品管專案 | 呼吸治療科、護理部、醫工部、品質管理中心聯合敬製 &nbsp;•&nbsp; 系統更新：2026.09.17")
+st.markdown("""
+<div style='text-align: center; color: #4B5563; font-size: 14px; line-height: 1.6;'>
+    <p style='margin-bottom: 4px;'><b>© 2026 國立臺灣大學醫學院附設醫院 - FACE 圈 | 罩護無痕品管專案</b></p>
+    <p style='margin-bottom: 4px;'>綜合診療部呼吸診療科、護理部、醫工部、品質管理中心聯合敬製</p>
+    <p style='margin-bottom: 0px;'><b>👨‍⚕️ 系統製作人：</b> 呼吸治療師 辛明翰 &nbsp;|&nbsp; <b>📅 製作日期：</b> 初版 2026.09.07 &nbsp;•&nbsp; 更新版 2026.09.17</p>
+</div>
+""", unsafe_allow_html=True)
