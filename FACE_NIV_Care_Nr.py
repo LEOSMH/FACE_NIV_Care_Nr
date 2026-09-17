@@ -6,47 +6,11 @@ import os
 
 # Set Page Config
 st.set_page_config(
-    page_title="FACE 圈 - NIV 罩護無痕 護理師臨床照護與練習助手",
+    page_title="FACE 圈 - NIV 罩護無痕 臨床照護助手",
     page_icon="🏥",
     layout="wide",
     initial_sidebar_state="expanded"
 )
-
-
-# Google Analytics (GA4 - G-ZSFLZD7215)
-import streamlit.components.v1 as components
-ga_snippet = """
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZSFLZD7215"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-ZSFLZD7215');
-</script>
-<script>
-  try {
-    var parentHead = window.parent.document.getElementsByTagName('head')[0];
-    if (parentHead) {
-      if (!parentHead.querySelector('script[src*="G-ZSFLZD7215"]')) {
-        var script1 = window.parent.document.createElement('script');
-        script1.async = true;
-        script1.src = 'https://www.googletagmanager.com/gtag/js?id=G-ZSFLZD7215';
-        parentHead.appendChild(script1);
-
-        var script2 = window.parent.document.createElement('script');
-        script2.innerHTML = "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-ZSFLZD7215');";
-        parentHead.appendChild(script2);
-      }
-    }
-  } catch (e) {
-    console.log('GA injection note:', e);
-  }
-</script>
-"""
-components.html(ga_snippet, height=0, width=0)
-
 
 # Custom Styling
 st.markdown("""
@@ -113,7 +77,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # App Headers
-st.markdown("<div class='main-title'>NIV 罩護無痕 臨床護理照護 App (護理師教學練習版)</div>", unsafe_allow_html=True)
+st.markdown("<div class='main-title'>NIV 罩護無痕 臨床護理照護 App</div>", unsafe_allow_html=True)
 st.markdown("<div class='sub-title'>台大醫院 FACE 圈 跨科部跨團隊智慧結晶 (護理、RT、醫工)</div>", unsafe_allow_html=True)
 
 # Sidebar - Patient Demographics & QCC Logo
@@ -140,7 +104,7 @@ st.sidebar.markdown("""
 **C**omfort (舒適防護)
 **E**limination (消除壓傷)
 """)
-st.sidebar.caption("👨‍⚕️ **系統製作人：** 呼吸治療師 辛明翰\n📅 **更新日期：** 2026.09.17 (護理師專用版)")
+st.sidebar.caption("👨‍⚕️ **系統製作人：** 呼吸治療師 辛明翰\n📅 **系統更新：** 2026.09.17")
 st.sidebar.divider()
 
 st.sidebar.subheader("👤 病患基本資料登記")
@@ -206,7 +170,7 @@ def update_ng_from_checklist():
     st.session_state["medras_ng_rt_key"] = val
 
 
-# Navigation Tabs for Nurse Reference/Practice Version (Exactly 5 Tabs)
+# Navigation Tabs for Nurse Reference/Practice Version
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "📋 照護流程主軸", 
     "🔍 MedRAS 智能評估小卡 (護理師 & RT 聯合版)", 
@@ -214,8 +178,6 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "⏰ 定期減壓時間點勾稽與備註", 
     "🛡️ 臉部皮膚完整度評估 (三班KEY單)"
 ])
-
-# TAB 1: FLOWCHART
 with tab1:
     st.header("📋 BIPAP 借機與照護完整流程圖")
     st.markdown("""
@@ -226,16 +188,16 @@ with tab1:
     digraph G {
         node [shape=box, style=filled, fontname="Arial", fontsize=10];
         
-        start [label="病房 BIPAP 借機需求\n(7A / 7D / 14C / 14D)", fillcolor="#E0F2FE", color="#0284C7"];
-        check_time [label="預計使用時間是否大於 12 小時？\n或新借出的新病人？", fillcolor="#FEF3C7", color="#D97706", shape=diamond];
-        borrow_trilogy [label="至管路櫃借用已綁好\n文件與物品的 Trilogy 機器", fillcolor="#E0F2FE", color="#0284C7"];
-        medras_eval [label="探視病人並勾選 MedRAS 小卡\n(2個護理師題目 / 4個RT題目)", fillcolor="#F3E8FF", color="#7C3AED"];
-        fp_recommend [label="符合任意 1 項？\n建議自費購買 F&P 面罩 (可免減壓墊)", fillcolor="#D1FAE5", color="#059669", shape=diamond];
-        buy_fp [label="引導家屬購買 F&P 面罩\n(免減壓墊，內建NG槽)", fillcolor="#D1FAE5", color="#059669"];
-        use_public [label="使用公費面罩\n(需加強減壓防護)", fillcolor="#FEE2E2", color="#DC2626"];
-        adjust_mask [label="確認面罩鬆緊度適當 (兩指寬/RT畫線標記)\n漏氣監測合格 (<45 / <60 Lpm)", fillcolor="#E0F2FE", color="#0284C7"];
-        audit_n [label="白班病房同仁 / 品管圈員協助稽核：\n1. 減壓動態查檢交班表\n2. 小時鐘指針設定", fillcolor="#F3E8FF", color="#7C3AED"];
-        done [label="落實每 2-4 小時移除面罩 15 分鐘\n持續追蹤皮膚狀況！", fillcolor="#D1FAE5", color="#059669"];
+        start [label="病房 BIPAP 借機需求\\n(7A / 7D / 14C / 14D)", fillcolor="#E0F2FE", color="#0284C7"];
+        check_time [label="預計使用時間是否大於 12 小時？\\n或新借出的新病人？", fillcolor="#FEF3C7", color="#D97706", shape=diamond];
+        borrow_trilogy [label="至管路櫃借用已綁好\\n文件與物品的 Trilogy 機器", fillcolor="#E0F2FE", color="#0284C7"];
+        medras_eval [label="探視病人並勾選 MedRAS 小卡\\n(2個護理師題目 / 4個RT題目)", fillcolor="#F3E8FF", color="#7C3AED"];
+        fp_recommend [label="符合任意 1 項？\\n建議自費購買 F&P 面罩 (可免減壓墊)", fillcolor="#D1FAE5", color="#059669", shape=diamond];
+        buy_fp [label="引導家屬購買 F&P 面罩\\n(免減壓墊，內建NG槽)", fillcolor="#D1FAE5", color="#059669"];
+        use_public [label="使用公費面罩\\n(需加強減壓防護)", fillcolor="#FEE2E2", color="#DC2626"];
+        adjust_mask [label="確認面罩鬆緊度適當 (兩指寬/RT畫線標記)\\n漏氣監測合格 (<45 / <60 Lpm)", fillcolor="#E0F2FE", color="#0284C7"];
+        audit_n [label="白班病房同仁 / 品管圈員協助稽核：\\n1. 減壓動態查檢交班表\\n2. 小時鐘指針設定", fillcolor="#F3E8FF", color="#7C3AED"];
+        done [label="落實每 2-4 小時移除面罩 15 分鐘\\n持續追蹤皮膚狀況！", fillcolor="#D1FAE5", color="#059669"];
 
         start -> check_time;
         check_time -> borrow_trilogy [label="是"];
@@ -251,7 +213,7 @@ with tab1:
     }
     """)
 
-# TAB 2: MedRAS
+# TAB 3: MedRAS
 with tab2:
     st.header("🔍 MedRAS 智能評估小卡 (護理師 & RT 聯合版)")
     st.markdown("""
@@ -316,7 +278,7 @@ with tab2:
         if medras_ng_select == "是": triggers.append("護理師評估：使用鼻胃管 (NG)")
         if medras_skin_select == "是": triggers.append("護理師評估：臉部皮膚脆弱或破皮")
         if rt_medras_ng_select == "是": triggers.append("RT評估：使用鼻胃管 (NG)")
-        if rt_medras_device_select in ["紗布", "減壓墊"]: triggers.append("RT評估：已使用減壓設備 (" + str(rt_medras_device_select) + ")")
+        if rt_medras_device_select in ["紗布", "減壓墊"]: triggers.append(f"RT評估：已使用減壓設備 ({rt_medras_device_select})")
         if rt_medras_skin_select == "是": triggers.append("RT評估：臉部配戴處已有破皮")
         if rt_medras_suit_select == "否": triggers.append("RT評估：面罩不適合病人 (臉凹或尺寸中間)")
 
@@ -347,7 +309,7 @@ with tab2:
             </div>
             """, unsafe_allow_html=True)
 
-# TAB 3: THREE SHIFTS CHECKLIST (BATCH KEYING)
+# TAB 4: THREE SHIFTS CHECKLIST (BATCH KEYING)
 with tab3:
     st.header("📊 最佳壓力區間 & 三班查檢交班單 (紙本單張批次KEY單)")
     st.markdown("請對照紙本查檢交班單，**一次輸入 yesterday/當日 白班 (N)、小夜 (HN)、大夜 (ON) 的完整數據**：")
@@ -422,7 +384,7 @@ with tab3:
         else:
             tension_ON = tension_ON_select
 
-# TAB 4: DECOMPRESSION MULTI-SELECT CHECKLIST
+# TAB 5: DECOMPRESSION MULTI-SELECT CHECKLIST
 with tab4:
     st.header("⏰ 定期減壓時間點勾稽與備註 (06:00 - 24:00)")
     st.markdown("""
@@ -463,50 +425,7 @@ with tab4:
     if not full_decomp_note:
         full_decomp_note = "無特殊備註"
 
-    st.divider()
-    st.subheader("3. 噴霧吸藥 (IH) 執行狀況與頻率：")
-    ih_use_select = st.selectbox(
-        "病患是否有使用 IH (Inhalation 噴霧吸藥治療)？",
-        ["否", "是", "未知", "其他 (手動填寫說明)"],
-        index=0,
-        key="ih_use_select_key",
-        help="記錄病患是否有搭配執行噴霧吸藥治療 (如 Ventolin, Pulmicort, Combivent 等)。"
-    )
-    
-    ih_status_val = ih_use_select
-    ih_freq_val = "N/A"
-    ih_note_val = "無"
-    
-    if ih_use_select == "是":
-        col_ih1, col_ih2 = st.columns(2)
-        with col_ih1:
-            ih_freq_select = st.selectbox(
-                "請選擇 IH 使用頻率 (常用頻率已排前)：",
-                ["Q6H", "Q8H", "Q4H", "Q12H", "其他 (手動填寫頻率)"],
-                index=0,
-                key="ih_freq_select_key"
-            )
-            if ih_freq_select == "其他 (手動填寫頻率)":
-                custom_ih_freq = st.text_input("請輸入自訂 IH 頻率", placeholder="例：Q8H PRN 或 BID", key="custom_ih_freq_key")
-                ih_freq_val = custom_ih_freq if custom_ih_freq else "其他頻率"
-            else:
-                ih_freq_val = ih_freq_select
-                
-        with col_ih2:
-            custom_ih_note = st.text_input("請輸入 IH 吸藥備註 / 藥物名稱 (可選)", placeholder="例：Combivent / Pulmicort / 配合 05/13/21 執行", key="custom_ih_note_key")
-            ih_note_val = custom_ih_note if custom_ih_note else "無特別備註"
-            
-    elif ih_use_select == "其他 (手動填寫說明)":
-        custom_ih_status = st.text_input("請輸入 IH 使用狀況說明", placeholder="例：PRN 必要時給予", key="custom_ih_status_key")
-        ih_status_val = f"其他 ({custom_ih_status})" if custom_ih_status else "其他"
-        custom_ih_note = st.text_input("請輸入 IH 備註說明", placeholder="例：病患自備藥物或配合噴霧治療", key="custom_ih_note_other_key")
-        ih_note_val = custom_ih_note if custom_ih_note else "無特別備註"
-        
-    elif ih_use_select == "未知":
-        custom_ih_note = st.text_input("請輸入 IH 備註說明 (可選)", placeholder="例：尚待醫囑確認", key="custom_ih_note_unknown_key")
-        ih_note_val = custom_ih_note if custom_ih_note else "無特別備註"
-
-# TAB 5: THREE SHIFTS SKIN ASSESSMENT
+# TAB 6: THREE SHIFTS SKIN ASSESSMENT
 with tab5:
     st.header("🛡️ 臉部皮膚完整度評估 (NPIAP 標準 - 三班KEY單)")
     st.markdown("請對照紙本查檢單，記錄該病患初次 Baseline 及三班臉部皮膚狀態：")
@@ -650,9 +569,12 @@ with tab5:
         st.markdown("""
         <div class='success-box'>
             🟢 <b>皮膚狀況良好或常規維持中：</b><br>
-            請持續落實每 2-4 小時定期移除面罩減壓 15 分鐘，維護最佳照護品質！
+            請持續落實每 2-4 小時定期移除面罩減壓 15 分鐘，維持最佳照護品質！
         </div>
         """, unsafe_allow_html=True)
+
+# TAB 7: SAVE & EXPORT
+
 
 # Footer
 st.divider()
@@ -660,6 +582,6 @@ st.markdown("""
 <div style='text-align: center; color: #4B5563; font-size: 14px; line-height: 1.6;'>
     <p style='margin-bottom: 4px;'><b>© 2026 國立臺灣大學醫學院附設醫院 - FACE 圈 | 罩護無痕品管專案</b></p>
     <p style='margin-bottom: 4px;'>綜合診療部呼吸診療科、護理部、醫工部、品質管理中心聯合敬製</p>
-    <p style='margin-bottom: 0px;'><b>👨‍⚕️ 系統製作人：</b> 呼吸治療師 辛明翰 &nbsp;|&nbsp; <b>📅 製作日期：</b> 初版 2026.09.07 &nbsp;•&nbsp; 更新版 2026.09.17</p>
+    <p style='margin-bottom: 0px;'><b>👨‍⚕️ 系統製作人：</b> 呼吸治療師 辛明翰 &nbsp;|&nbsp; <b>📅 系統更新：</b> 2026.09.17</p>
 </div>
 """, unsafe_allow_html=True)
