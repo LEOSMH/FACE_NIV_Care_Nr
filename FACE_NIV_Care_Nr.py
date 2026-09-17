@@ -6,7 +6,7 @@ import os
 
 # Set Page Config
 st.set_page_config(
-    page_title="FACE 圈 - NIV 罩護無痕 臨床照護助手",
+    page_title="FACE 圈 - NIV 罩護無痕 護理師臨床照護與練習助手",
     page_icon="🏥",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -77,7 +77,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # App Headers
-st.markdown("<div class='main-title'>NIV 罩護無痕 臨床護理照護 App</div>", unsafe_allow_html=True)
+st.markdown("<div class='main-title'>NIV 罩護無痕 臨床護理照護 App (護理師教學練習版)</div>", unsafe_allow_html=True)
 st.markdown("<div class='sub-title'>台大醫院 FACE 圈 跨科部跨團隊智慧結晶 (護理、RT、醫工)</div>", unsafe_allow_html=True)
 
 # Sidebar - Patient Demographics & QCC Logo
@@ -104,6 +104,7 @@ st.sidebar.markdown("""
 **C**omfort (舒適防護)
 **E**limination (消除壓傷)
 """)
+st.sidebar.caption("👨‍⚕️ **系統製作人：** 呼吸治療師 辛明翰\n📅 **製作日期：** 初版 2026.09.07 (更新版 2026.09.17)")
 st.sidebar.divider()
 
 st.sidebar.subheader("👤 病患基本資料登記")
@@ -577,4 +578,10 @@ with tab5:
 
 # Footer
 st.divider()
-st.markdown("© 2026 國立臺灣大學醫學院附設醫院 - FACE 圈 | 罩護無痕品管專案 | 呼吸治療科、護理部、醫工部、品質管理中心聯合敬製")
+st.markdown("""
+<div style='text-align: center; color: #4B5563; font-size: 14px; line-height: 1.6;'>
+    <p style='margin-bottom: 4px;'><b>© 2026 國立臺灣大學醫學院附設醫院 - FACE 圈 | 罩護無痕品管專案</b></p>
+    <p style='margin-bottom: 4px;'>綜合診療部呼吸診療科、護理部、醫工部、品質管理中心聯合敬製</p>
+    <p style='margin-bottom: 0px;'><b>👨‍⚕️ 系統製作人：</b> 呼吸治療師 辛明翰 &nbsp;|&nbsp; <b>📅 製作日期：</b> 初版 2026.09.07 &nbsp;•&nbsp; 更新版 2026.09.17</p>
+</div>
+""", unsafe_allow_html=True)
