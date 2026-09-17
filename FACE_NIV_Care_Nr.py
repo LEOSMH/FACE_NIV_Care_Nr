@@ -77,7 +77,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # App Headers
-st.markdown("<div class='main-title'>NIV 罩護無痕 臨床護理照護 App (護理師教學練習版)</div>", unsafe_allow_html=True)
+st.markdown("<div class='main-title'>NIV 罩護無痕 臨床護理照護 App</div>", unsafe_allow_html=True)
 st.markdown("<div class='sub-title'>台大醫院 FACE 圈 跨科部跨團隊智慧結晶 (護理、RT、醫工)</div>", unsafe_allow_html=True)
 
 # Sidebar - Patient Demographics & QCC Logo
